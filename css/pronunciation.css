@@ -1,0 +1,618 @@
+/** Custom Styles for this project **/
+
+.ui-overlay-a {
+    background-color: white !important;
+}
+
+
+/** Text Styles **/
+
+.mainTitle h1 {
+    position: absolute;
+    bottom: 0.2em;
+    right: 0.5em;
+    left: 0.5em;
+}
+
+.mainTitle {
+    text-align: right;
+}
+
+.mainTitleE h1 {
+    font-family: 'Adelle W01 Regular';
+    font-size: 1.5em;
+}
+
+.audioContainer {
+    text-align: center;
+    direction: ltr;
+    background-color: white;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 0.2em;
+}
+
+.bookimg {
+    background-image: url(../images/headerimage-arabic-pronunciation.png);
+}
+
+.aboutimg {
+    background-image: url(../images/qasid_overview_02.jpg);
+}
+
+.s1 {
+    font-size: 1.5em;
+    font-style: normal;
+}
+
+.s2 {
+    font-size: 1.2em;
+    font-style: normal;
+}
+
+.s3 {
+    font-size: 0.8em;
+    font-style: normal;
+}
+
+.as2 {
+    font-size: 1.8em;
+    font-style: normal;
+    font-weight: bold !important;
+    font-family: "Sakkal Majalla_1188897" !important;
+    text-shadow: none !important;
+    color: #000;
+    margin-right: 0.3em;
+}
+
+.as2 p {
+    margin: 0.3em !important;
+}
+
+.as2S {
+    font-size: 1.5em;
+    font-style: normal;
+    color: #8c0c04;
+    text-align: center;
+}
+
+.asList {
+    font-size: 1.4em !important;
+    font-style: normal;
+    line-height: 1.2em;
+    text-shadow: none !important;
+    font-family: "Sakkal Majalla_1188897" !important;
+}
+
+.arTitle {
+    font-family: "Sakkal Majalla_1188897" !important;
+    text-shadow: none;
+    font-weight: normal;
+    text-align: center;
+}
+
+#surahtitle {
+    width: 100%;
+    margin-bottom: -0.7em;
+}
+
+#surahtitle a.ui-icon-carat-l {
+    position: absolute;
+    left: 0.5em;
+    top: 0.5em;
+}
+
+#surahCount {
+    color: gray;
+    font-size: 0.9em;
+    width: 100%;
+    text-align: center;
+}
+
+#surahtitle a.ui-icon-carat-r {
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+}
+
+#audioSlider .ui-slider-track .ui-btn.ui-slider-handle {
+    border-radius: 50%;
+    width: 0.7em;
+    height: 0.7em;
+    margin: -0.45em 0 0 -0.25em;
+    box-shadow: none;
+    background-color: #6f6f6f;
+    border-color: #6f6f6f;
+}
+
+#audioSlider .ui-slider-track .ui-btn-active {
+    background-color: #6f6f6f;
+}
+
+#audioSlider .ui-slider-track {
+    height: 0.2em;
+    box-shadow: none;
+}
+
+.wordType {
+    color: #8A8A8A;
+    font-style: italic;
+}
+
+.wordMearning {
+    font-weight: 800;
+}
+
+.wordMeaningBox {
+    font-family: 'AvenirNextLTW01-Regular' !important;
+    text-align: left;
+    line-height: 0.5em;
+}
+
+.wordExampleTitle {
+    font-weight: 400;
+}
+
+.wordExampleEng {
+    margin-left: 1em !important;
+}
+
+.wordExampleAr {
+    font-family: "Sakkal Majalla_1188897" !important;
+    text-align: right;
+    margin-right: 1em !important;
+    direction: rtl;
+}
+
+.wordText {
+    direction: rtl;
+}
+
+.listeningBox {
+    padding: 1.5em;
+}
+
+.englishBody li a {
+    font-family: 'AvenirNextLTW01-Regular' !important;
+}
+
+.englishBody p,
+.englishBody blockquote,
+.englishBody h2,
+.englishBody h3 {
+    text-align: left !important;
+    direction: ltr !important;
+    font-family: 'AvenirNextLTW01-Regular' !important;
+}
+
+.bodypage {
+    padding: 0.7em;
+}
+
+.listArabic li a,
+.listArabic li p,
+.listArabic li {
+    text-align: right !important;
+    direction: rtl;
+}
+
+.listAr {
+    font-size: 1.2em;
+    white-space: normal !important;
+}
+
+.titleEng {
+    display: block;
+    font-family: 'Adelle W01 Regular';
+    font-size: 0.7em;
+}
+
+#chapterlist li a,
+#chapterlist li p {
+    font-size: 1.4em !important;
+}
+
+#vocabindex li a {
+    font-size: 1.3em !important;
+}
+
+
+/** Audio & Video Controls **/
+
+input.ui-slider-input {
+    display: none;
+}
+
+.ui-slider-track {
+    margin: 0 1.5em 0 1.5em !important;
+}
+
+#audioTime,
+#audioTotaltime {
+    font-family: 'AvenirNextLTW01-Regular' !important;
+    font-size: 0.8em;
+    position: absolute;
+    margin-top: -1.7em;
+    color: #333333;
+}
+
+#audioTime {
+    left: 1.8em;
+}
+
+#audioTotaltime {
+    right: 1.4em;
+}
+
+#repeat-container .ui-collapsible {
+    margin: 0;
+}
+
+.ui-collapsible-heading .ui-btn.ui-btn-b {
+    background-color: white;
+    font-family: 'AvenirNextLTW01-Regular';
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.ui-collapsible-heading .ui-btn-icon-right:before {
+    background-image: url('images/Icon-Repeat.png');
+    background-repeat: no-repeat;
+    content: '';
+    width: 75%;
+    height: 75%;
+    position: absolute;
+    background-size: contain;
+    left: 1.2em;
+    top: 0.3em;
+}
+
+.ui-collapsible-heading .ui-btn-icon-right:after {
+    background-image: url('images/Arrow-Prev-DarkGrey.png');
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    width: 1.4em;
+    height: 1.4em;
+    background-size: cover;
+    border-radius: none;
+}
+
+.ui-arrow-l {
+    background-image: url('images/Arrow-Prev-DarkGrey.png');
+    width: 1.2em;
+    background-size: cover;
+    position: absolute;
+    left: 1em;
+    top: 1em;
+}
+
+#prevBtn:hover {
+    cursor: pointer;
+}
+
+.ui-arrow-r {
+    background-image: url('images/Arrow-Prev-DarkGrey.png');
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    width: 1.2em;
+    background-size: cover;
+    position: absolute;
+    right: 1em;
+    top: 1em;
+}
+
+#surahtitle .ui-btn-icon-notext:after {
+    background: none;
+}
+
+#repeat-settings {
+    text-align: left;
+    direction: ltr;
+}
+
+#repeat-settings span,
+#repeat-settings legend,
+#repeat-settings label,
+#repeat-settings select {
+    font-size: 0.8em;
+    font-family: 'AvenirNextLTW01-Regular';
+}
+
+#repeat-settings .ui-controlgroup-label {
+    display: inline-block;
+}
+
+#repeat-settings .ui-btn {
+    background-color: white;
+    color: black;
+    text-shadow: none;
+}
+
+#repeat-settings .ui-btn-active {
+    background-color: #707070;
+    color: white;
+    border-color: #dddddd;
+    text-shadow: none;
+}
+
+#verselist .ui-btn-active {
+    background-color: #707070;
+    color: white;
+    text-shadow: none;
+}
+
+div.audio-play-pause {
+    margin: auto;
+    height: 2em;
+    width: 2em;
+    cursor: pointer;
+    margin: 0.25em 0 0 0.25em;
+}
+
+#repeat-container .ui-collapsible-content {
+    background-color: #f6f6f6;
+}
+
+div.audio-paused {
+    background-image: url('images/Icon-Play.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+div.audio-playing {
+    background-image: url('images/Icon-Pause.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+div.audiobtnPos {
+    width: 100%;
+    display: block;
+    text-align: left;
+}
+
+.audioImg,
+.passageAudio {
+    width: 70%;
+}
+
+.collapsecenter {
+    text-align: center;
+}
+
+video {
+    width: 95vw;
+    height: auto;
+}
+
+.videoBtn {
+    width: calc(95vw);
+    height: calc(95vw);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#videoBtn01 {
+    background-image: url(../images/01_button.png);
+}
+
+#videoBtn02 {
+    background-image: url(../images/02_button.png);
+}
+
+#videoBtn03 {
+    background-image: url(../images/03_button.png);
+}
+
+#videoBtn04 {
+    background-image: url(../images/04_button.png);
+}
+
+#videoBtn05 {
+    background-image: url(../images/05_button.png);
+}
+
+#videoBtn6 {
+    background-image: url(../images/06_button.png);
+}
+
+#videoBtn7 {
+    background-image: url(../images/07_button.png);
+}
+
+#videoBtn8 {
+    background-image: url(../images/08_button.png);
+}
+
+#videoBtn9 {
+    background-image: url(../images/09_button.png);
+}
+
+#videoBtn10 {
+    background-image: url(../images/10_button.png);
+}
+
+#videoBtn11 {
+    background-image: url(../images/11_button.png);
+}
+
+#videoBtn12 {
+    background-image: url(../images/12_button.png);
+}
+
+#videoBtn13 {
+    background-image: url(../images/13_button.png);
+}
+
+#videoBtn14 {
+    background-image: url(../images/14_button.png);
+}
+
+#videoBtn15 {
+    background-image: url(../images/15_button.png);
+}
+
+#videoBtn16 {
+    background-image: url(../images/16_button.png);
+}
+
+#videoBtn17 {
+    background-image: url(../images/17_button.png);
+}
+
+#videoBtn18 {
+    background-image: url(../images/18_button.png);
+}
+
+#videoBtn19 {
+    background-image: url(../images/19_button.png);
+}
+
+#videoBtn20 {
+    background-image: url(../images/20_button.png);
+}
+
+#videoBtn21 {
+    background-image: url(../images/21_button.png);
+}
+
+#videoBtn22 {
+    background-image: url(../images/22_button.png);
+}
+
+#videoBtn23 {
+    background-image: url(../images/23_button.png);
+}
+
+#videoBtn24 {
+    background-image: url(../images/24_button.png);
+}
+
+#videoBtn25 {
+    background-image: url(../images/25_button.png);
+}
+
+#videoBtn26 {
+    background-image: url(../images/26_button.png);
+}
+
+#videoBtn27 {
+    background-image: url(../images/27_button.png);
+}
+
+#videoBtn28 {
+    background-image: url(../images/28_button.png);
+}
+
+#videoBtn29 {
+    background-image: url(../images/29_button.png);
+}
+
+#videoBtn30 {
+    background-image: url(../images/30_button.png);
+}
+
+#videoBtn31 {
+    background-image: url(../images/31_button.png);
+}
+
+#videoBtn32 {
+    background-image: url(../images/32_button.png);
+}
+
+#videoBtn33 {
+    background-image: url(../images/33_button.png);
+}
+
+#videoBtn34 {
+    background-image: url(../images/34_button.png);
+}
+
+.videocontainer {
+    padding: 0.5em;
+}
+
+.wordcontainer {
+    padding: 0 0.2em 0.5em 0.2em;
+}
+
+.wordcontainer a {
+    font-size: 1.8em;
+}
+
+.bottomnav {
+    text-align: center;
+}
+
+#homeBtn {
+    margin-top: 0em;
+}
+
+.list-image {
+    max-height: 3em !important;
+    max-width: 3em !important;
+    top: 0.5em !important;
+    left: 0.5em !important;
+    bottom: 0.5em !important;
+    border-radius: 50% !important;
+}
+
+.ui-listview>.ui-li-has-thumb>.ui-btn,
+.ui-listview>.ui-li-static.ui-li-has-thumb {
+    min-height: 1em;
+    padding-top: 1.2em;
+    padding-bottom: 1em;
+}
+
+
+/** Table view for detail pages **/
+
+.ui-collapsible h3 a {
+    text-align: right !important;
+    padding-right: 1.8em !important;
+}
+
+@media ( min-width: 10em) {
+    /* Show the table header rows and set all cells to display: table-cell */
+    .my-custom-breakpoint td,
+    .my-custom-breakpoint th,
+    .my-custom-breakpoint tbody th,
+    .my-custom-breakpoint tbody td,
+    .my-custom-breakpoint thead td,
+    .my-custom-breakpoint thead th {
+        display: table-cell;
+        margin: 0;
+        text-align: right;
+        font-size: 1.3em;
+    }
+    .my-custom-breakpoint th {
+        font-weight: bold;
+        background-color: #FFF;
+    }
+    /* Hide the labels in each cell */
+    .my-custom-breakpoint tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+    .my-custom-breakpoint tr:nth-child(even) {
+        background-color: #FFFFFF;
+    }
+    .my-custom-breakpoint td .ui-table-cell-label,
+    .my-custom-breakpoint th .ui-table-cell-label {
+        display: none;
+    }
+}
+
+.phraseimg {
+    width: 90%;
+    margin: 0.5em;
+}
+
+#letterslist li a {
+    font-size: 1.5em;
+}

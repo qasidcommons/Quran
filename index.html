@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arabic & Qu'ran Pronunciation</title>
+    <link rel="stylesheet" href="css/themes/qasid-commons.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/commons.css" />
+    <link rel="stylesheet" href="css/pronunciation.css" />
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <style type="text/css">
+        @font-face {
+            font-family: "Adelle W01 Regular";
+            src: url("Fonts/e800d24d-133b-4293-a15b-611f67139c09.eot?#iefix");
+            src: url("Fonts/e800d24d-133b-4293-a15b-611f67139c09.eot?#iefix") format("eot"), url("Fonts/f5ebba9f-e1ef-4756-9f7a-d428f532e4cd.woff2") format("woff2"), url("Fonts/89fe91e2-46a0-4e3b-8735-78b3de8da38f.woff") format("woff"), url("Fonts/152fa65e-e42f-431d-a37f-a66d10903310.ttf") format("truetype"), url("Fonts/6ad1d18a-0166-4178-812f-07e16b64000b.svg#6ad1d18a-0166-4178-812f-07e16b64000b") format("svg");
+        }
+        
+        @font-face {
+            font-family: "AvenirNextLTW01-Regular";
+            src: url("Fonts/e9167238-3b3f-4813-a04a-a384394eed42.eot?#iefix");
+            src: url("Fonts/e9167238-3b3f-4813-a04a-a384394eed42.eot?#iefix") format("eot"), url("Fonts/2cd55546-ec00-4af9-aeca-4a3cd186da53.woff2") format("woff2"), url("Fonts/1e9892c0-6927-4412-9874-1b82801ba47a.woff") format("woff"), url("Fonts/46cf1067-688d-4aab-b0f7-bd942af6efd8.ttf") format("truetype"), url("Fonts/52a192b1-bea5-4b48-879f-107f009b666f.svg#52a192b1-bea5-4b48-879f-107f009b666f") format("svg");
+        }
+        
+        @font-face {
+            font-family: "Sakkal Majalla_1188897";
+            src: url("Fonts/995a9042-de35-40fb-859c-4dcb3a1a1927.eot?#iefix");
+            src: url("Fonts/995a9042-de35-40fb-859c-4dcb3a1a1927.eot?#iefix") format("eot"), url("Fonts/9c50ff61-3bc4-45e1-93b6-86c46a274d42.woff2") format("woff2"), url("Fonts/eed2ff57-3c99-45c4-9fe3-4926718ec053.woff") format("woff"), url("Fonts/7738dada-02d8-41d1-8a0a-0f560de6c39a.ttf") format("truetype"), url("Fonts/9ce65b2b-016b-4953-a80a-08a7cb183bdc.svg#9ce65b2b-016b-4953-a80a-08a7cb183bdc") format("svg");
+        }
+        
+        @font-face {
+            font-family: "Sakkal Majalla_1188899";
+            src: url("Fonts/652071be-5a65-41aa-97da-f56a0ccf3933.eot?#iefix");
+            src: url("Fonts/652071be-5a65-41aa-97da-f56a0ccf3933.eot?#iefix") format("eot"), url("Fonts/080fd08e-d083-468c-925f-a7a33a77ce37.woff2") format("woff2"), url("Fonts/69a84019-60fe-4e85-b264-227c7561f42d.woff") format("woff"), url("Fonts/e5eb82a8-990c-4449-9295-49071088337c.ttf") format("truetype"), url("Fonts/cb361494-fdf5-404a-8131-40d2871f4e74.svg#cb361494-fdf5-404a-8131-40d2871f4e74") format("svg");
+        }
+    </style>
+    <script>
+        var currentAudio = "none";
+        var currentvocab = "";
+        var currentpage = "";
+        $(function() {
+            $("[data-role='header'], [data-role='footer']").toolbar();
+            var listbtn = $("#listbtn");
+            var searchbtn = $("#searchbtn");
+            var aboutbtn = $("#aboutbtn");
+            var quranbtn = $("#quranbtn");
+            var prevbtn = $("#prevBtn");
+            var nextbtn = $("#nextBtn");
+            var prevbtn2 = $("#prevBtn2");
+            var nextbtn2 = $("#nextBtn2");
+            var currentLoc = 0;
+            var suraInfo = {
+                id: null,
+                result: null
+            }
+            var thisItem = 0;
+            var currentVerse = 0;
+            var surahs = [];
+            var currentsurah = [];
+            var audioPlayer = $("#dialogueAudio");
+            var verselistText = "";
+            var sliderDrag = false;
+            var loadedonce = false;
+            var isAudioPlaying = false;
+            var repeatTimes = 1;
+            var repeatStart = 0;
+            var repeatEnd = 0;
+            var repeatedNo = 0;
+            var versesDDList = "";
+            var repeatText = "";
+
+            function minTwoDigits(n) {
+                return (n < 10 ? '0' : '') + n;
+            }
+
+            function splitText(thisText) {
+                var returnText = thisText.split(/{|}/);
+                return returnText;
+            }
+
+            function playVerse(v) {
+                $("#verseTitle").text(surahs[thisItem - 1].name);
+                $("#surahCount").text(thisItem.toString() + " of 114");
+                audioPlayer[0].src = currentsurah.ayahs[v - 1].audio;
+                audioPlayer[0].load();
+            };
+
+            function setActive(v) {
+                deactivate(v - 1);
+                thisI = $("#u_" + v.toString());
+                thisI.addClass("ui-btn-active");
+                $("html,body").animate({
+                    scrollTop: thisI.offset().top - 265
+                }, 500);
+            }
+
+            function deactivate(ov) {
+                oldv = $("#u_" + ov.toString());
+                if (ov >= 1) {
+                    if (oldv.hasClass("ui-btn-active")) {
+                        oldv.removeClass("ui-btn-active");
+                    }
+                }
+            }
+
+            var updateTime = function() {
+                if (isNaN(audioPlayer[0].duration) == false) {
+                    if (sliderDrag == false) {
+                        $("#slider-0").val(audioPlayer[0].currentTime / audioPlayer[0].duration * 100).slider("refresh");
+                    } else {
+                        audioPlayer[0].currentTime = $("#slider-0").val() / 100 * audioPlayer[0].duration;
+                    }
+                    var minutes = Math.floor(audioPlayer[0].currentTime / 60);
+                    var seconds = audioPlayer[0].currentTime - minutes * 60;
+                    var hours = Math.floor(audioPlayer[0].currentTime / 3600);
+                    var lessTime = audioPlayer[0].duration - audioPlayer[0].currentTime;
+                    var minutesT = Math.floor(lessTime / 60);
+                    var secondsT = lessTime - minutesT * 60;
+                    var hoursT = Math.floor(lessTime / 3600);
+                    $("#audioTime").text(minTwoDigits(hours.toFixed(0)) + ":" + minTwoDigits(minutes.toFixed(0)) + ":" + minTwoDigits(seconds.toFixed(0)));
+                }
+            }
+
+            var onAudioLoaded = function() {
+                if ($("#audioPlayBtn").hasClass("ui-state-disabled")) {
+                    $("#audioPlayBtn").removeClass("ui-state-disabled");
+                }
+                if (isAudioPlaying) {
+                    audioPlayer[0].play();
+                    setActive(currentVerse);
+                    if ($(".audio-play-pause").hasClass("audio-paused")) {
+                        $(".audio-play-pause").toggleClass('audio-paused audio-playing');
+                    }
+                }
+            }
+
+            var onAudioStartLoad = function() {
+                if ($("#audioPlayBtn").hasClass("ui-state-disabled") == false) {
+                    $("#audioPlayBtn").addClass("ui-state-disabled");
+                }
+            }
+
+            var nextAudio = function() {
+                repeatedNo += 1;
+                if (repeatedNo == repeatTimes) {
+                    repeatedNo = 0;
+                    if (currentVerse < currentsurah.numberOfAyahs) {
+                        if ((repeatEnd > 0) && (currentVerse == repeatEnd)) {
+                            audioPlayer[0].pause();
+                            isAudioPlaying = false;
+                            if ($(".audio-play-pause").hasClass("audio-playing")) {
+                                $(".audio-play-pause").toggleClass('audio-paused audio-playing');
+                            }
+                        } else {
+                            currentVerse += 1;
+                            playVerse(currentVerse);
+                        }
+                    } else {
+                        if ($(".audio-play-pause").hasClass("audio-playing")) {
+                            $(".audio-play-pause").toggleClass('audio-paused audio-playing');
+                        }
+                    }
+                } else {
+                    playVerse(currentVerse);
+                }
+            }
+
+            $(".repeatradios").on("click", function() {
+                repeatTimes = $(this)[0].value;
+            });
+
+            $("#prevBtn").on("click", function() {
+                if (thisItem > 1) {
+                    thisItem -= 1;
+                    checkQuranNav();
+                    currentVerse = 1;
+                    isAudioPlaying = false;
+                    setVerse();
+                }
+            });
+
+            $("#nextBtn").on("click", function() {
+                if (thisItem < 114) {
+                    thisItem += 1;
+                    checkQuranNav();
+                    currentVerse = 1;
+                    isAudioPlaying = false;
+                    setVerse();
+                }
+            });
+
+            function checkQuranNav() {
+                if (thisItem == 1) {
+                    if (prevbtn.hasClass("ui-state-disabled") == false) {
+                        prevbtn.addClass("ui-state-disabled");
+                    }
+                    if (nextbtn.hasClass("ui-state-disabled")) {
+                        nextbtn.removeClass("ui-state-disabled");
+                    }
+                } else if (thisItem == 114) {
+                    if (prevbtn.hasClass("ui-state-disabled")) {
+                        prevbtn.removeClass("ui-state-disabled");
+                    }
+                    if (nextbtn.hasClass("ui-state-disabled") == false) {
+                        nextbtn.addClass("ui-state-disabled");
+                    }
+                } else {
+                    if (prevbtn.hasClass("ui-state-disabled")) {
+                        prevbtn.removeClass("ui-state-disabled");
+                    }
+                    if (nextbtn.hasClass("ui-state-disabled")) {
+                        nextbtn.removeClass("ui-state-disabled");
+                    }
+                }
+            }
+
+            $(audioPlayer).bind('timeupdate', updateTime);
+
+            $(audioPlayer).bind('ended', nextAudio);
+
+            $(audioPlayer).bind("canplaythrough", onAudioLoaded);
+
+            $(audioPlayer).bind("loadstart", onAudioStartLoad);
+
+            $("#audioPlayBtn").on("click", function() {
+
+                if ($(this).hasClass('audio-paused')) {
+                    audioPlayer[0].play();
+                    isAudioPlaying = true;
+                    $(this).toggleClass('audio-playing audio-paused');
+                    setActive(currentVerse);
+                } else {
+                    audioPlayer[0].pause();
+                    isAudioPlaying = false;
+                    $(this).toggleClass('audio-paused audio-playing');
+                }
+            });
+
+            function populateVerses() {
+                verselistText = "";
+                versesDDList = "";
+                $.each(currentsurah.ayahs, function(key, val) {
+                    if ((thisItem > 1) && (val.numberInSurah == 1)) {
+                        newtext1 = val.text.replace("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "");
+                        vtext = newtext1.replace(" ", "");
+                    } else {
+                        vtext = val.text;
+                    }
+                    verselistText += "<li data-icon='carat-l'><a id='u_" + val.numberInSurah.toString() + "' href='#verse'>" + val.numberInSurah.toString() + ". " + vtext + "</a></li>";
+                    versesDDList += "<option value='" + val.numberInSurah.toString() + "'>" + val.numberInSurah.toString() + "</option>";
+                });
+                $("#verselist").html(verselistText);
+                $("#verselist li a").on("click", function() {
+                    deactivate(currentVerse);
+                    currentVerse = Number($(this).attr("id").substring(2, $(this).attr("id").length));
+                    isAudioPlaying = true;
+                    playVerse(currentVerse);
+                });
+                $("#verselist").listview("refresh");
+                $("#select-start-verse").html(versesDDList);
+                $("#select-end-verse").html(versesDDList);
+                $("#select-start-verse").selectmenu("refresh");
+                $("#select-end-verse").selectmenu("refresh");
+            };
+
+            $("#select-start-verse").change(function() {
+                repeatStart = $(this).val();
+            });
+
+            $("#select-end-verse").change(function() {
+                repeatEnd = $(this).val();
+            });
+
+            var setVerse = function() {
+                if (currentVerse == 1) {
+                    suraURL = "http://api.alquran.cloud/surah/" + thisItem.toString() + "/ar.minshawi"
+                    $.getJSON(suraURL, function(data) {
+                        if (data.status == "OK") {
+                            currentsurah = data.data;
+                            playVerse(currentVerse);
+                            populateVerses();
+                        }
+                    });
+                }
+            }
+
+            $.getJSON("http://api.alquran.cloud/surah", function(data) {
+                var items = [];
+                if (data.status == "OK") {
+                    surahs = data.data;
+                    $.each(data.data, function(key, val) {
+                        $("#suralist").append("<li data-role='list-divider' data-theme='a'><span>" + val.number.toString() + ". " + val.englishName + "</span><span class='ui-li-count'>" + val.numberOfAyahs.toString() + " verses | " + val.revelationType + "</span></li><li data-icon='carat-r' data-filtertext='" + val.number.toString() + " " + val.englishName + " " + val.englishNameTranslation + " " + val.name + "'><a href='#verse' id='l_" + val.number.toString() + "'><p>" + val.englishNameTranslation + " | " + val.name + "</p></a></li>");
+                        items.push('<li id="' + key + '">' + val + '</li>');
+                    });
+                    $("#suralist li a").on("click", function() {
+                        thisItem = Number($(this).attr("id").substring(2, $(this).attr("id").length));
+                        currentVerse = 1;
+                        isAudioPlaying = false;
+                        setVerse();
+                        checkQuranNav();
+                    });
+                    $("#suralist").listview("refresh");
+                }
+            });
+
+            $.mobile.document.on("pagecontainerload", function() {
+                currentAudio = "none";
+            });
+            $.mobile.document.on("pagecontainerchange", function() {
+                currentpage = document.location.hash;
+                console.log(currentpage);
+
+                if (loadedonce == false) {
+                    $("#slider-0").on('slidestop', function(event) {
+                        sliderDrag = false;
+                        audioPlayer[0].play();
+                    });
+                    $("#slider-0").on('slidestart', function(event) {
+                        sliderDrag = true;
+                        audioPlayer[0].pause();
+                        var slider_value = $("#slider-0").slider().val();
+                    });
+                } else {
+                    audioPlayer[0].pause();
+                    if ($(".audio-play-pause").hasClass("audio-playing")) {
+                        $(".audio-play-pause").toggleClass('audio-paused audio-playing');
+                    }
+                }
+
+                loadedonce = true;
+
+                if ((currentpage == "") || (currentpage == "#quran")) {
+                    if (listbtn.hasClass("listbtnup") == false) {
+                        listbtn.addClass("listbtnup");
+                    }
+                    if (listbtn.hasClass("listbtndown")) {
+                        listbtn.removeClass("listbtndown");
+                    }
+                    if (aboutbtn.hasClass("aboutbtndown")) {
+                        aboutbtn.removeClass("aboutbtndown");
+                    }
+                    if (aboutbtn.hasClass("aboutbtnup") == false) {
+                        aboutbtn.addClass("aboutbtnup");
+                    }
+                    if (quranbtn.hasClass("quranbtnup")) {
+                        quranbtn.removeClass("quranbtnup");
+                    }
+                    if (quranbtn.hasClass("quranbtndown") == false) {
+                        quranbtn.addClass("quranbtndown");
+                    }
+                } else if (currentpage == "#about") {
+                    if (listbtn.hasClass("listbtndown")) {
+                        listbtn.removeClass("listbtndown");
+                    }
+                    if (listbtn.hasClass("listbtnup") == false) {
+                        listbtn.addClass("listbtnup");
+                    }
+                    if (aboutbtn.hasClass("aboutbtnup")) {
+                        aboutbtn.removeClass("aboutbtnup");
+                    }
+                    if (aboutbtn.hasClass("aboutbtndown") == false) {
+                        aboutbtn.addClass("aboutbtndown");
+                    }
+                    if (quranbtn.hasClass("quranbtndown")) {
+                        quranbtn.removeClass("quranbtndown");
+                    }
+                    if (quranbtn.hasClass("quranbtnup") == false) {
+                        quranbtn.addClass("quranbtnup");
+                    }
+                } else if (currentpage == "#verse") {
+
+                    if (thisItem == 0) {
+                        thisItem = 1;
+                        currentVerse = 1;
+                        isAudioPlaying = false;
+                        setVerse();
+                        checkQuranNav();
+                    }
+
+                    if (listbtn.hasClass("listbtndown") == false) {
+                        listbtn.addClass("listbtndown");
+                    }
+                    if (listbtn.hasClass("listbtnup")) {
+                        listbtn.removeClass("listbtnup");
+                    }
+                    if (aboutbtn.hasClass("aboutbtndown")) {
+                        aboutbtn.removeClass("aboutbtndown");
+                    }
+                    if (aboutbtn.hasClass("aboutbtnup") == false) {
+                        aboutbtn.addClass("aboutbtnup");
+                    }
+                    if (quranbtn.hasClass("quranbtndown")) {
+                        quranbtn.removeClass("quranbtndown");
+                    }
+                    if (quranbtn.hasClass("quranbtnup") == false) {
+                        quranbtn.addClass("quranbtnup");
+                    }
+                }
+            });
+            var count = $(".videoSrc").length;
+            $(".videoSrc").each(function(video_no) {
+                if (video_no < count) {
+                    this.addEventListener("ended", function() {
+                        $(this).hide();
+                    });
+                    $(this).hide();
+                }
+            });
+            var countvbtn = $(".videoBtn").length;
+            $(".videoBtn").each(function(btn_no) {
+                if (btn_no < countvbtn) {
+                    this.addEventListener("click", function() {
+                        thisVideoId = $(this).children("video").attr('id');
+                        thisVideo = $("#" + thisVideoId);
+                        thisVideo.show();
+                        thisVideo[0].play();
+                    });
+                }
+            });
+            var countabtn = $(".audioBtn").length;
+            $(".audioBtn").each(function(btn_no) {
+                if (btn_no < countabtn) {
+                    this.addEventListener("click", function() {
+                        thisAudioId = $(this).children("audio").attr('id');
+                        thisAudio = $("#" + thisAudioId);
+                        thisAudio[0].play();
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <div data-role="header" data-position="fixed" data-theme="a" id="topbar">
+            <h1 class="englishText">Qu'ran Pronunciation</h1>
+        </div>
+
+        <section id="quran" data-role="page">
+            <div class='ui-content mainTitle bookimg' role='main'></div>
+            <ul data-role="listview" data-theme="b" data-filter="true" data-filter-theme="b" data-icon="custom" class="listEng" id="suralist" data-filter-placeholder="Find Surah by title (Eng/Ar/Trans.) or number">
+            </ul>
+        </section>
+
+        <section id='verse' data-role='page'>
+            <div class="fixed" data-position="fixed">
+                <div class='audioContainer'>
+                    <div id="surahtitle">
+                        <a href="#" class="ui-arrow-l ui-nodisc-icon ui-btn-inline ui-btn-icon-notext ui-corner-all" data-icon="custom" id="prevBtn">Previous Surah</a>
+                        <p class="as1" id="verseTitle"></p>
+                        <a href="#" class="ui-arrow-r ui-nodisc-icon ui-btn-inline ui-btn-icon-notext ui-corner-all" data-icon="custom" id="nextBtn">Next Surah</a>
+                    </div>
+                    <div id="surahCount"></div>
+                    <div class="audioControls">
+                        <div class='audio-play-pause audio-paused ui-btn-inline' id="audioPlayBtn"><audio id='dialogueAudio' class='audioSrc'><source id="dialogueSrc" type='audio/mp3' src=""></audio></div>
+                    </div>
+                    <div class="full-width-slider" id="audioSlider">
+                        <label for="slider-0" class="ui-hidden-accessible">Time Slider</label>
+                        <input type="range" name="slider-0" id="slider-0" value="0" min="0" max="100" data-theme="c" data-highlight="true">
+                    </div>
+                    <div>
+                        <span id="audioTime" class="ui-btn-inline">00:00:00</span>
+                        <span id="audioTotaltime" class="ui-btn-inline">-00:00:00</span>
+                    </div>
+                </div>
+                <div id="repeat-container">
+                    <div data-role="collapsible" data-collapsed-icon="custom" data-expanded-icon="custom" data-iconpos="right" data-inset="false" data-theme="b" data-content-theme="b" class="ui-nodisc-icon">
+                        <h4>Repeat Settings</h4>
+                        <div id="repeat-settings">
+                            <span>From Verse:</span>
+                            <select name="select-choice-mini-v1" id="select-start-verse" data-mini="true" data-inline="true">
+                                    <option value="1">1</option>
+                                    <option value="1">10</option>
+                                </select>
+                            <span>To Verse:</span>
+                            <select name="select-choice-mini-v2" id="select-end-verse" data-mini="true" data-inline="true">
+                                    <option value="1">1</option>
+                                    <option value="1">10</option>
+                                </select>
+                            <fieldset id="repeatSelection" data-role="controlgroup" data-type="horizontal">
+                                <legend>No. of times:</legend>
+                                <input type="radio" name="repeat-times" id="repeat-1" value="1" checked="checked" class="repeatradios">
+                                <label for="repeat-1">1</label>
+                                <input type="radio" name="repeat-times" id="repeat-2" value="2" class="repeatradios">
+                                <label for="repeat-2">2</label>
+                                <input type="radio" name="repeat-times" id="repeat-3" value="3" class="repeatradios">
+                                <label for="repeat-3">3</label>
+                                <input type="radio" name="repeat-times" id="repeat-4" value="4" class="repeatradios">
+                                <label for="repeat-4">4</label>
+                                <input type="radio" name="repeat-times" id="repeat-5" value="5" class="repeatradios">
+                                <label for="repeat-5">5</label>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <form>
+                    <input data-type="search" id="divOfPs-input" placeholder="Find verse by text or number">
+                </form>
+            </div>
+            <div id="audioExtras">
+                <p class="englishInfo">The verses below are for navigation only. Please follow along with your copy of the Qu'ran</p>
+                <ul data-role="listview" data-filter="true" data-theme="b" data-filter-theme="b" id="verselist" data-filter-placeholder="Search Verses..." data-input="#divOfPs-input">
+                </ul>
+                <div id="verseText">
+                </div>
+            </div>
+
+
+        </section>
+
+        <section id="about" data-role="page">
+            <div class="ui-content mainTitleE aboutimg" role="main">
+            </div>
+            <div class="bodypage englishBody">
+                <h3>For letters, Audio Recordings and Content Review by Abdulkareem Khasawneh</h3>
+                <h3>For Qu'ran, data and audio recitation (Minshawi) from Al Quran Cloud - https://alquran.cloud/</h3>
+                <h2>Sponsored by Qasid Arabic Institute</h2>
+                <h3>About the Institute</h3>
+                <blockquote>The word <b>qasid</b> is used to describe a path that is direct and smooth. This is the way we believe the Arabic language should be taught. The Qasid Institute for Arabic has quietly developed a reputation as one of the leading centers
+                    in the Middle East for Arabic language learning. A comprehensive curriculum taught over five distinct levels takes a student from the proper pronunciation of letters to a level of mastery.</blockquote>
+                <p>Graduating students who have applied themselves will find that understanding an all-Arabic university course to be within reach, and translating general texts to be manageable. Our graduate-level modules prepare advanced students to teach
+                    Arabic and Middle East Studies, something that a number of our alumni now do at universities throughout the US and Europe. To indicate something about its level of rigor, Qasid’s Summer Intensive Program (SIP) has a higher percentage
+                    of Ivy League students vis a vis the rest of its student body than any other private Arabic language institute in the Middle East.</p>
+                <p>The term qasid is also used to describe an individual who strives forward with a direct, specific intention, which is a dictionary-perfect definition for the kind of student that Qasid attracts. Although designed mainly for university-level
+                    students and time-starved professionals, Qasid students have come as young as 15 and as old as 65. Our students include consulate officers, Fulbright researchers, full-time mothers, medical doctors, FLAS recipients, and Ivy League
+                    graduates, and hail from nearly two dozen countries.</p>
+                <h2>An Ideal Location</h2>
+                <p>Many scholars of Arabic have noted that the Jordanian dialect is among the closest to Classical Arabic (fusha), making Amman an ideal setting for learning-or perfecting-one’s Arabic. An inherent shortcoming of university-based Arabic instruction
+                    is the lack of daily, out-of-classroom practice. Language learning requires practice-and lots of it. For this reason, regardless of how many years of formal study a student has had, a several-month immersion in an Arabic-rich setting
+                    is critical for intermediate/advanced mastery of the language.</p>
+                <p>At the same time, English is a second language for many residents of Amman, meaning that in dealings with cab drivers, shopkeepers, and others, beginners have a support ready, in case words from a particular lesson slip their minds. Jordan
+                    has a rich Arab and Islamic heritage, and the natural hospitality of the Jordanian people will be the source of many endearing memories.</p>
+                <h2>Facilities</h2>
+                <p>Our campus is housed in an 8,000 square foot facility on University Street in the Sport City district of Amman. Classes are conducted in classrooms each bearing the name of one of the historically-significant centers of learning in Islamic
+                    history (Cairo, Istanbul, Baghdad, Damascus, etc.), and feature custom-made wood tables in U and L configurations to foster discussion. Complimentary wi-fi extends to every classroom, a book store and copy center serves students and
+                    staff alike, and a spacious conference hall accommodates seminars and presentations delivered by special-invite guests. Within easy reach are numerous malls and shopping outlets, art and cultural centers, sports and gym facilities,
+                    and bookstores. It is an optimal locale for those desiring to immerse themselves in the active hustle and bustle of one of the most dynamic capital cities in the Arab world.</p>
+            </div>
+        </section>
+
+        <div data-role="footer" data-position="fixed" data-theme="b" class="footernav">
+            <div data-role="navbar" data-grid="b" class="footernav" id="footer">
+                <ul>
+                    <li><a href="#quran" class="quranbtndown" data-icon="custom" id="quranbtn">Surahs</a></li>
+                    <li><a href="#verse" class="listbtnup" data-icon="custom" id="listbtn">Verses</a></li>
+                    <li><a href="#about" data-icon="custom" class="aboutbtnup" id="aboutbtn">About</a></li>
+                </ul>
+            </div>
+            <!-- /navbar -->
+        </div>
+        <!-- /footer -->
+
+    </div>
+</body>
+
+</html>
